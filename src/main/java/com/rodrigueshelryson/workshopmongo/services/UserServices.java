@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.rodrigueshelryson.workshopmongo.domain.entities.User;
+import com.rodrigueshelryson.workshopmongo.domain.User;
 import com.rodrigueshelryson.workshopmongo.dto.UserDTO;
 import com.rodrigueshelryson.workshopmongo.repository.UserRepository;
 import com.rodrigueshelryson.workshopmongo.services.exception.ObjectNotFoundException;
@@ -33,6 +33,17 @@ public class UserServices {
 	public void delete(String id) {
 		findById(id);
 		userRepository.deleteById(id);
+	}
+	
+	public User update(User newObj) {
+		User obj = findById(newObj.getId());
+		updateData(newObj, obj);
+		return userRepository.save(obj);
+	}
+	
+	public void updateData(User newObj, User obj){
+		obj.setName(newObj.getName());
+		obj.setEmail(newObj.getEmail());
 	}
 	
 	public User fromDTO(UserDTO objDto) {

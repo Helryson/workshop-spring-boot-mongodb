@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.rodrigueshelryson.workshopmongo.domain.entities.User;
+import com.rodrigueshelryson.workshopmongo.domain.User;
 import com.rodrigueshelryson.workshopmongo.dto.UserDTO;
 import com.rodrigueshelryson.workshopmongo.services.UserServices;
 
@@ -49,8 +50,16 @@ public class UserResources {
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<UserDTO> delete(@PathVariable String id){
+	public ResponseEntity<Void> delete(@PathVariable String id){
 		userServices.delete(id);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<UserDTO> update(@RequestBody UserDTO objDto, @PathVariable String id){
+		User obj = userServices.fromDTO(objDto);
+		obj.setId(id);
+		userServices.update(obj);
 		return ResponseEntity.noContent().build();
 	}
 }

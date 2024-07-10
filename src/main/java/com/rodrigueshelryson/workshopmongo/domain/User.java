@@ -1,4 +1,4 @@
-package com.rodrigueshelryson.workshopmongo.domain.entities;
+package com.rodrigueshelryson.workshopmongo.domain;
 
 import java.io.Serializable;
 import java.util.Objects;
