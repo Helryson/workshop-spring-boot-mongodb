@@ -1,11 +1,14 @@
 package com.rodrigueshelryson.workshopmongo.services;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.rodrigueshelryson.workshopmongo.domain.Post;
 import com.rodrigueshelryson.workshopmongo.domain.User;
 import com.rodrigueshelryson.workshopmongo.dto.UserDTO;
 import com.rodrigueshelryson.workshopmongo.repository.UserRepository;
@@ -48,6 +51,34 @@ public class UserServices {
 	
 	public User fromDTO(UserDTO objDto) {
 		return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
+	}
+	
+	public boolean contemPalavraOfensiva(String conteudo) {
+		
+		String path = "C:\\temp\\offensive.txt";
+		try(BufferedReader br = new BufferedReader(new FileReader(path))){
+			
+			String palavra = br.readLine();
+			while(palavra != null) {
+				if(conteudo.toLowerCase().contains(palavra)) {
+					return true;
+				}
+				palavra = br.readLine();
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public User verificaPosts(String id) {
+		User obj = findById(id);
+		for(Post post : obj.getPosts()) {
+			if(contemPalavraOfensiva(post.getBody())) {
+				obj.removePosts(post);
+			}
+		}
+		return obj;
 	}
 	
 }

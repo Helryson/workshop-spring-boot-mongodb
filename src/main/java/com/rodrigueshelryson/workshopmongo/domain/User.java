@@ -65,8 +65,12 @@ public class User implements Serializable{
 		return posts;
 	}
 
-	public void setPosts(List<Post> posts) {
-		this.posts = posts;
+	public void addPosts(Post post) {
+		this.posts.add(post);
+	}
+	
+	public void removePosts(Post post) {
+		this.posts.remove(post);
 	}
 	
 	@Override
