@@ -14,14 +14,19 @@ import com.rodrigueshelryson.workshopmongo.services.exception.ObjectNotFoundExce
 public class PostServices {
 
 	@Autowired
-	private PostRepository userRepository;
+	private PostRepository postRepository;
 
 	public List<Post> findAll() {
-		return userRepository.findAll();
+		return postRepository.findAll();
 	}
 
 	public Post findById(String id) {
-		Optional<Post> obj = userRepository.findById(id);
+		Optional<Post> obj = postRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(id));
 	}
+	
+	public List<Post> findByTitle(String text){
+		return postRepository.searchTitle(text);
+	}
+	
 }
